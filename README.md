@@ -1,6 +1,9 @@
 # 4150 Project - Shiny App
 Using Interday Log Returns of 10 Energy Stocks
 
+## Base Functionality
+Provides Dynamic Mean/SD plot to see relative returns/volatility
+
 ## For Each Stock:
 1. Display histograms for your data by stock symbol.
 2. Display a normal probability plot.
@@ -14,12 +17,5 @@ Using Interday Log Returns of 10 Energy Stocks
   * A diagram of the data with the least-squares line,
   * A graphical depiction of residuals
   * R2
-
-## Additional Plots (NOT YET IMPLEMENTED)
-1. Average Returns by Variance Scatter
- * Whole Sample
- * By Sector
- * By Season
-2. Integrate Market Cap, Beta
 
 (Data from Google Finance for year of 2014)
