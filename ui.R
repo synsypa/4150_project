@@ -69,6 +69,7 @@ shinyUI(
                     mainPanel(
                       plotOutput("s1_regPlot"),
                       textOutput("s1_regRes"),
+                      textOutput("s1_coefP"),
                       plotOutput("s1_res")
                     )
                   )

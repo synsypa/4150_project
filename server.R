@@ -117,15 +117,28 @@ shinyServer(function(input, output) {
   output$s1_regRes <- renderText({ 
     stock = tolower(input$stk2)
     lr = log_return[[stock]]
-    n <- length(lr)
-    time <- seq(from=1,to = n, by = 1)
-    model <- lm(lr ~ time)
+    n = length(lr)
+    time = seq(from=1,to = n, by = 1)
+    model = lm(lr ~ time)
     plot(time,lr,xlab="Trading days since beginning 2014",ylab = input$stk2)
     abline(model)
     paste("Slope of regression line = ",round(model$coefficients[2],digits = 5),"
           ","| Intercept = ",round(model$coefficients[1],digits =5), "| R-squared = ",
-          round(summary(model)$r.squared,digits = 5))
+          round(summary(model)$r.squared, digits = 5))
     })
+  
+  # Produce Regression Coef P-value for Stock vs Time
+  output$s1_coefP <- renderText({ 
+    stock = tolower(input$stk2)
+    lr = log_return[[stock]]
+    n = length(lr)
+    time = seq(from=1,to = n, by = 1)
+    model = lm(lr ~ time)
+    plot(time,lr,xlab="Trading days since beginning 2014",ylab = input$stk2)
+    abline(model)
+    paste("p-value of the Time Coefficient = ",round(summary(model)$coefficients[2,4],digits = 5))
+  })
+  
   
   ## MULTISTOCK ANALYSES
   # Generate Scatterplot of Means and SDs (for 2 Stock t-test Page)
