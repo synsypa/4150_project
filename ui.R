@@ -5,12 +5,6 @@
 # Initialization
 library(shiny)
 
-# Navigation Bar
-shinyUI(navbarPage("Energy Stock Analysis",
-                   tabPanel("Single Stock"),
-                   tabPanel("Two Stock")
-))
-
 # Define UI for Single Stock analysis
 shinyUI(
   fluidPage(
@@ -38,7 +32,11 @@ shinyUI(
                       # Select Confidence Level
                       sliderInput("cLevel",
                                   "Confidence Level:",
-                                  min = 0, max = 1, value = .95, step = .01)
+                                  min = 0, max = 1, value = .95, step = .01),
+                      
+                      # View Mean/SD Scatterplot
+                      plotOutput("scatterPlot")
+                      
                     ),
 
                     # Display Histogram and Confidence Interval
@@ -62,8 +60,10 @@ shinyUI(
                                     "Consolidated Edison, Inc"="ed", "EOG Resources Inc"="eog",
                                     "Linn Energy LLC"="line", "Marathon Oil Corp"="mro",
                                     "Plug Power Inc."="plug", "Renewable Energy Group, Inc"="regi",
-                                    "SolarCity Corp"="scty", "Exxon Mobil Corp"="xom"))
-                    ),
+                                    "SolarCity Corp"="scty", "Exxon Mobil Corp"="xom")),
+                      # View Mean/SD Scatterplot
+                      plotOutput("scatterPlot2")
+                      ),
                     
                     # Display Regression Output          
                     mainPanel(
@@ -77,7 +77,7 @@ shinyUI(
               
               # Multi Stock Analysis
               navbarMenu("Two Stock Analysis",                     
-                         tabPanel("t-testing",
+                         tabPanel("Mean Return Comparison",
                                   titlePanel("Two-stock Returns Comparison"),
                                   sidebarLayout(
                                     sidebarPanel(
@@ -99,13 +99,17 @@ shinyUI(
                                       # Select Confidence Level
                                       sliderInput("cLevel2",
                                                   "Confidence Level:",
-                                                  min = 0, max = 1, value = .95, step = .01)
+                                                  min = 0, max = 1, value = .95, step = .01),
+                                      
+                                      # View Mean/SD Scatterplot
+                                      plotOutput("scatterPlot3")
                                     ),
                                     mainPanel(
                                       textOutput("s2_ttest")
                                     )
                                   )
                          ),
+                         
                          tabPanel("Linear Regressions",
                                   titlePanel("Two-stock Regressions"),
                                   sidebarLayout(
@@ -123,8 +127,11 @@ shinyUI(
                                                     "Consolidated Edison, Inc"="ed", "EOG Resources Inc"="eog",
                                                     "Linn Energy LLC"="line", "Marathon Oil Corp"="mro",
                                                     "Plug Power Inc."="plug", "Renewable Energy Group, Inc"="regi",
-                                                    "SolarCity Corp"="scty", "Exxon Mobil Corp"="xom"))
-                                    ),
+                                                    "SolarCity Corp"="scty", "Exxon Mobil Corp"="xom")),
+                                      
+                                      # View Mean/SD Scatterplot
+                                      plotOutput("scatterPlot4")
+                                      ),
                                     
                                     # Display Regression Output          
                                     mainPanel(
