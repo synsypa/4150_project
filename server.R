@@ -31,7 +31,7 @@ priceFiles <- do.call("cbind", lapply(files, read.csv))
   
   log_return  = data.frame(btu,cvx,ed,eog,line,mro,plug,regi,scty,xom)
   
-  # Reference Dataframe for scatterplots
+  # Create Reference Dataframe for scatterplots
   means = colMeans(log_return)
   sds = apply(log_return, 2, sd)
   symbols = c("btu","cvx","ed","eog","line","mro","plug","regi","scty","xom")
@@ -40,7 +40,7 @@ priceFiles <- do.call("cbind", lapply(files, read.csv))
   
 shinyServer(function(input, output) {
   ## SINGLE STOCK ANALYSES
-  # Generate Scatterplot of Means and SDs
+  # Generate Scatterplot of Means and SDs (for Histogram Page)
   output$scatterPlot = renderPlot({
     plot(scatter_ref$means, scatter_ref$sds, type = "p", xlim = c(-.005, .005), ylim = c(0,.08),
          main = "Log-returns over 2014", 
@@ -50,17 +50,7 @@ shinyServer(function(input, output) {
          col=ifelse(scatter_ref$symbols == input$stk, "red", "blue"))
   })
   
-  # Generate Scatterplot of Means and SDs (for 1 Stock Regression Page)
-  output$scatterPlot2 = renderPlot({
-    plot(scatter_ref$means, scatter_ref$sds, type = "p", xlim = c(-.005, .005), ylim = c(0,.08),
-         main = "Log-returns over 2014", 
-         xlab = "Mean Log-Returns", ylab = "Standard Deviation of Log-Returns",
-         col=ifelse(scatter_ref$symbols == input$stk2, "red", "blue") , pch = 19, cex = 1)
-    text(means, sds, labels = symbols, cex = 1, pos = c(1,2,4,4,1,2,2,2,2,1),
-         col=ifelse(scatter_ref$symbols == input$stk2, "red", "blue"))
-  })
-  
-  # Generate the Histogram
+  # Generate the Histogram (with Normal overlay)
   output$histPlot = renderPlot({
     stock = tolower(input$stk)
     bins = seq(min(log_return[[stock]]), max(log_return[[stock]]), length.out=input$bins + 1)
@@ -95,6 +85,16 @@ shinyServer(function(input, output) {
       
       paste("The ", input$cLevel, "Confidence interval of the Standard Deviation is [", left,",", right,"]")
     })
+  
+  # Generate Scatterplot of Means and SDs (for 1 Stock Regression Page)
+  output$scatterPlot2 = renderPlot({
+    plot(scatter_ref$means, scatter_ref$sds, type = "p", xlim = c(-.005, .005), ylim = c(0,.08),
+         main = "Log-returns over 2014", 
+         xlab = "Mean Log-Returns", ylab = "Standard Deviation of Log-Returns",
+         col=ifelse(scatter_ref$symbols == input$stk2, "red", "blue") , pch = 19, cex = 1)
+    text(means, sds, labels = symbols, cex = 1, pos = c(1,2,4,4,1,2,2,2,2,1),
+         col=ifelse(scatter_ref$symbols == input$stk2, "red", "blue"))
+  })
   
   # Produce Regression Plot for Stock vs Time
   output$s1_regPlot <- renderPlot({
